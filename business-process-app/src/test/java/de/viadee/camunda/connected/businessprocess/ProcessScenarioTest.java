@@ -28,7 +28,7 @@ import static org.junit.Assert.*;
  * Test case starting an in-memory database-backed Process Engine.
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@SpringBootTest
 public class ProcessScenarioTest {
 
     private static final String PROCESS_DEFINITION_KEY = "taschenrechner";

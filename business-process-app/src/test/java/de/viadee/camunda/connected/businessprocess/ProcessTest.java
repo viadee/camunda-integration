@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * Test case starting an in-memory database-backed Process Engine.
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
+@SpringBootTest
 public class ProcessTest {
 
     private static final String PROCESS_DEFINITION_KEY = "taschenrechner";
