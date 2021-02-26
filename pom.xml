@@ -16,7 +16,7 @@
 
 	<properties>
 		<camunda.version>7.14.0</camunda.version>
-		<camunda.springboot.version>3.4.0</camunda.springboot.version>
+		<camunda.springboot.version>7.14.0</camunda.springboot.version>
 		<springboot.version>2.2.4.RELEASE</springboot.version>
 		<camel.version>2.25.3</camel.version>
 
