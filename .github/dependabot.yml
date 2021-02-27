@@ -1,0 +1,16 @@
+# Dependabot Version Checks
+
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "maven"
+    directory: "/business-process-app"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "maven"
+    directory: "/calculator-service/"
+    schedule:
+      interval: "weekly"
