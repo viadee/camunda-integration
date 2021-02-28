@@ -1,34 +1,23 @@
 package de.viadee.camunda.connected.businessprocess;
 
+import static org.camunda.bpm.engine.test.assertions.bpmn.AbstractAssertions.init;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.apache.ibatis.logging.LogFactory;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.runtime.ProcessInstance;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.camunda.bpm.extension.junit5.test.ProcessEngineExtension;
 import org.camunda.bpm.scenario.ProcessScenario;
 import org.camunda.bpm.scenario.Scenario;
 import org.camunda.bpm.scenario.run.ProcessRunner.ExecutableRunner;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
-
-import org.mockito.MockitoAnnotations;
-
-import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.*;
-import static org.junit.Assert.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Test case starting an in-memory database-backed Process Engine.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@ExtendWith(ProcessEngineExtension.class)
 public class ProcessScenarioTest {
 
     private static final String PROCESS_DEFINITION_KEY = "taschenrechner";
@@ -40,10 +29,9 @@ public class ProcessScenarioTest {
         LogFactory.useSlf4jLogging(); // MyBatis
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
         init(processEngine);
-        MockitoAnnotations.initMocks(this);
     }
 
     @Mock
