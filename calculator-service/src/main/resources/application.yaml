@@ -1,6 +1,5 @@
 server.port: 8090
 camunda.rest.baseurl: http://localhost:8080/engine-rest/
-camunda.externalTask.workerId: apacheCamelWorker
-asyncResponseTimeout: 1000
-lockDuration: 1000
-topicSubscription: calculator
+camunda.externalTask.asyncResponseTimeout: 1000
+camunda.externalTask.lockDuration: 1000
+camunda.externalTask.calculatorWorker.topicSubscription: calculator

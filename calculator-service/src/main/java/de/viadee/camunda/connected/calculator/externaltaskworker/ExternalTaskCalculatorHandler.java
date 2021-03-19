@@ -28,10 +28,10 @@ public class ExternalTaskCalculatorHandler implements ExternalTaskHandler {
 	@Autowired
 	private CalculatorService calculatorService;
 	
-	@Value("${lockDuration}")
+	@Value("${camunda.externalTask.lockDuration}")
 	private int lockduration;
 	
-	@Value("${topicSubscription}")
+	@Value("${camunda.externalTask.calculatorWorker.topicSubscription}")
 	private String topicSubscription;
 
 	@Override

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ExternalTaskConfig {
 	
-	@Value("${asyncResponseTimeout}")
+	@Value("${camunda.externalTask.asyncResponseTimeout}")
 	private int asyncResponseTimeout;
 	
 	@Value("${camunda.rest.baseurl}")
