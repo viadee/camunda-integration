@@ -14,12 +14,6 @@ public class CalculateRouteBuilder extends RouteBuilder {
     private FetchResultProcessor fetchResultProcessor;
 
     @Autowired
-    private FetchExternalTaskJobProcessor fetchJobsProcessor;
-
-    @Autowired
-    private ExecuteExternalTaskJobProcessor executeJobProcessor;
-
-    @Autowired
     private MessageCorrelationProcessor messageCorrelationProcessor;
 
 
@@ -35,10 +29,5 @@ public class CalculateRouteBuilder extends RouteBuilder {
                 .delayer(2000)
                 .log("Request ${body}")
                 .process(messageCorrelationProcessor);
-
-       from("timer:calculationJobPoller?period=20s").routeId("externalTaskRoute")
-                .process(fetchJobsProcessor)
-                    .split(simple("${body}")).process(executeJobProcessor)
-                .end();
     }
 }
