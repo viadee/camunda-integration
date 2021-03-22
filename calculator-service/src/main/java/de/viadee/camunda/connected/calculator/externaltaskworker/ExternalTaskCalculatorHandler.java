@@ -10,7 +10,9 @@ import org.camunda.bpm.client.task.ExternalTask;
 import org.camunda.bpm.client.task.ExternalTaskHandler;
 import org.camunda.bpm.client.task.ExternalTaskService;
 import org.camunda.bpm.engine.variable.Variables;
+import org.camunda.bpm.engine.variable.value.LongValue;
 import org.camunda.bpm.engine.variable.value.ObjectValue;
+import org.camunda.bpm.engine.variable.value.StringValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -37,13 +39,16 @@ public class ExternalTaskCalculatorHandler implements ExternalTaskHandler {
 	@Override
 	public void execute(ExternalTask externalTask, ExternalTaskService externalTaskService) {
 
-		long num1x = (long) externalTask.getVariable("num1");
-		long num2x = (long) externalTask.getVariable("num2");
-		String operator = (String) externalTask.getVariable("operator");
-		int num1 = (int) num1x;
-		int num2 = (int) num2x;
+		StringValue operator = externalTask.getVariableTyped("operator");
+		String operatorx = operator.getValue();
 		
-		Number ergebnis = calculatorService.calculate(num1, num2, operator);
+		LongValue num1 = externalTask.getVariableTyped("num1");
+		Long num1x = num1.getValue();
+		
+		LongValue num2 = externalTask.getVariableTyped("num2");
+		Long num2x = num2.getValue();
+				
+		Number ergebnis = calculatorService.calculate(num1x.intValue(), num2x.intValue(), operatorx);
 		
 		ObjectValue results = Variables
 			      .objectValue(ergebnis) 
