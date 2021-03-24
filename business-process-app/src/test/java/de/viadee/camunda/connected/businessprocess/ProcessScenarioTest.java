@@ -1,7 +1,12 @@
 package de.viadee.camunda.connected.businessprocess;
 
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
+
 import java.util.Map;
+
+import de.viadee.camunda.connected.businessprocess.calculator.Operator;
 import org.apache.ibatis.logging.LogFactory;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.variable.Variables;
@@ -14,11 +19,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * Test case starting an in-memory database-backed Process Engine.
  */
 @ExtendWith(ProcessEngineExtension.class)
+@SpringBootTest
 public class ProcessScenarioTest {
 
     private static final String PROCESS_DEFINITION_KEY = "taschenrechner";
@@ -30,6 +37,7 @@ public class ProcessScenarioTest {
     @BeforeEach
     public void setup() {
       MockitoAnnotations.initMocks(this);
+     when(myScenario.waitsAtUserTask("utErgebnisBestaetigen")).thenReturn((task) -> {task.complete();});
     }
     
     @Mock private ProcessScenario myScenario;
@@ -41,19 +49,17 @@ public class ProcessScenarioTest {
         Map<String, Object> variables = 
             Variables.createVariables()
           .putValue("integrationType", "plain")
-          .putValue("num1", "10")
-          .putValue("num2", "10")
-          .putValue("operator", "+");
+          .putValue("num1", Long.valueOf("10"))
+          .putValue("num2", Long.valueOf("10"))
+          .putValue("operator", Operator.Plus.toString());
       
-        StartingByKey starter = Scenario.run(myScenario).startByKey(PROCESS_DEFINITION_KEY, variables);
-        assertNotNull(starter);
-        
-        // Define scenarios by using camunda-bpm-assert-scenario:
+        Scenario scenario = Scenario.run(myScenario).startByKey(PROCESS_DEFINITION_KEY, variables).execute();
+        assertNotNull(scenario);
 
-        // Scenario scenario = starter.execute();
-        // assertThat(scenario.instance(myScenario)).variables().containsEntry("result", "20");
-        // verify(myScenario, never()).hasStarted("SubProcessManualCheck");
-        // verify(myScenario).hasFinished("EndEventApplicationAccepted");
+        // Define scenarios by using camunda-bpm-assert-scenario:
+        assertThat(scenario.instance(myScenario)).variables().containsEntry("result", Long.valueOf("20"));
+        verify(myScenario).hasFinished("stCalculatePlain");
+        verify(myScenario, times(1)).waitsAtUserTask("utErgebnisBestaetigen");
     }
 
 }
