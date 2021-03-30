@@ -25,7 +25,7 @@ public class CalculatorDelegate implements JavaDelegate {
 		LongValue number2 = execution.getVariableTyped("num2");
 
 		// Process
-		long result = calculator.processCalculation(number1.getValue(), operator.getValue(), number2.getValue());
+		Number result = calculator.processCalculation(number1.getValue(), operator.getValue(), number2.getValue());
 
 		// Output
 		execution.setVariable("result", result);
