@@ -7,6 +7,7 @@ import org.camunda.bpm.engine.variable.value.StringValue;
 import org.springframework.stereotype.Component;
 
 import de.viadee.camunda.connected.businessprocess.calculator.MiniCalculator;
+import de.viadee.camunda.connected.businessprocess.calculator.Operator;
 
 /**
  * Plain Old Java Delegate for a calculation facilitating an embedded calculator
@@ -21,11 +22,11 @@ public class CalculatorDelegate implements JavaDelegate {
 
 		// Input
 		LongValue number1 = execution.getVariableTyped("num1");
-		StringValue operator = execution.getVariableTyped("operator");
 		LongValue number2 = execution.getVariableTyped("num2");
-
+		Operator operator = Operator.valueOf(execution.getVariableTyped("operator").getValue().toString());
+		
 		// Process
-		Number result = calculator.processCalculation(number1.getValue(), operator.getValue(), number2.getValue());
+		Number result = calculator.processCalculation(number1.getValue(), operator, number2.getValue());
 
 		// Output
 		execution.setVariable("result", result);
