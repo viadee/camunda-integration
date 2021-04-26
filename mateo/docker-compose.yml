@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  mateo:
+    image: registry-cloud.dev.app.intern.viadee.de/vtf/vtf:latest
+    volumes:
+      - ./Scripts:/opt/mateo/Scripts/Taschenrechner
+    ports:
+      - "8123:8123"
+    networks:
+      my_net:
+        ipv4_address: 172.28.1.1
+  mateo-bridge:
+    image: docker.pkg.github.com/viadee/mateo-camunda-bridge/mateo_camunda_bridge_image:main
+    ports:
+      - "8082:8082"
+    networks:
+      my_net:
+        ipv4_address: 172.28.1.2
+    environment:
+    - de.viadee.mateo.rpa.mateo-api.url=http://mateo:8123
+    - de.viadee.mateo.rpa.camunda-api.url=http://host.docker.internal:8080/engine-rest
+networks:
+  my_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+        

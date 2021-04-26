@@ -126,9 +126,26 @@ response;</camunda:script>
       <bpmn:outgoing>SequenceFlow_10h4aux</bpmn:outgoing>
       <bpmn:messageEventDefinition messageRef="calculationResultMessage" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:serviceTask id="stCalculateRPA" name="Ergebnis berechnen (RPA)" camunda:asyncBefore="true" camunda:delegateExpression="${calculatorRpaDelegate}">
+    <bpmn:serviceTask id="stCalculateRPA" name="Ergebnis berechnen (RPA)" camunda:type="external" camunda:topic="mateo">
       <bpmn:extensionElements>
-        <camunda:failedJobRetryTimeCycle>R0/PT5M</camunda:failedJobRetryTimeCycle>
+        <camunda:properties>
+          <camunda:property name="MATEO_SCRIPT" value="/opt/mateo/Scripts/Taschenrechner/TaschenrechnerChrome.xlsm" />
+          <camunda:property name="RETRY_CONFIG" value="R3/PT3RM" />
+        </camunda:properties>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="extIn_mateoParams">
+            <camunda:map>
+              <camunda:entry key="num1">${num1}</camunda:entry>
+              <camunda:entry key="num2">${num2}</camunda:entry>
+              <camunda:entry key="operator">${operator}</camunda:entry>
+            </camunda:map>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="extOut_mateoParams">
+            <camunda:list>
+              <camunda:value>result</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+        </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_13isku4</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_18cpeoo</bpmn:outgoing>
